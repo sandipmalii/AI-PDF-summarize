@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sommaire - AI SaaS for Visual PDF Summaries
 
-## Getting Started
+**Date:** 2025-03-31
 
-First, run the development server:
+I learned to create a full-stack AI SaaS application called **Sommaire** that transforms PDFs into beautiful visual summaries, similar to Instagram reels. The project was built using a **$0 Tech Stack** with free tools and resources. In case of running out of OpenAI credits, the application seamlessly switches to **Gemini AI**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 🚀 **Application Features I Implemented**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 📝 Created clear, structured summaries with key points and insights.
+- 🎨 Developed an interactive summary viewer with progress tracking.
+- 🔒 Implemented secure file handling and processing.
+- 🔐 Built protected routes and API endpoints.
+- 💰 Added flexible pricing plans (Basic and Pro).
+- 🪝 Integrated webhook implementation for Stripe events.
+- 📊 Designed a user dashboard for managing summaries.
+- 📱 Ensured responsive design for both mobile and desktop.
+- 🔄 Enabled real-time updates and path revalidation.
+- 🚀 Deployed the application with production-ready features.
+- 🔔 Added toast notifications for status updates and error handling.
+- 📈 Improved performance with optimizations.
+- 🔍 Implemented SEO-friendly summary generation.
+- 🗂️ Provided markdown export for converting summaries into blog posts.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🧑‍💻 **Technologies I Learned and Used**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 🚀 **Next.js 15 App Router** for server-side rendering, routing, and API endpoints using Server Components and Server Actions.
+- ⚛️ **React 19** for building dynamic user interfaces with reusable components.
+- 🔑 **Clerk** for secure authentication using Passkeys, GitHub, and Google Sign-in.
+- 🤖 **GPT-4** for AI-powered summarization with contextual understanding.
+- 🧠 **Langchain** for PDF parsing, text extraction, and document chunking.
+- 🎨 **ShadCN UI** for developing accessible and customizable React components.
+- 💾 **NeonDB (PostgreSQL)** for serverless database storage.
+- 📤 **UploadThing** for secure PDF uploads (up to 32MB).
+- 💳 **Stripe** for managing subscriptions and secure payments.
+- 🔔 **Toast notifications** for real-time user feedback.
+- 📜 **TypeScript** for static typing and a better development experience.
+- 💅 **TailwindCSS 4** for utility-first, responsive styling.
+- 🚀 **Vercel** for deploying the application.
 
-## Learn More
+This project was a comprehensive learning experience in AI SaaS development, incorporating modern tools and best practices for building scalable and efficient applications.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
