@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌟 Sommaire - Transform Your PDFs into Visual Summaries
 
-## Getting Started
+**Date:** 2025-03-31
 
-First, run the development server:
+Hey there! 🚀 I built **Sommaire**, a full-stack AI SaaS application that magically turns your PDFs into beautiful, engaging visual summaries, like Instagram reels. With a budget-friendly **$0 Tech Stack** and free tools, you won't have to worry about costs. Plus, if OpenAI credits run out, it seamlessly switches to **Gemini AI** for continued service!
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ **What I Created**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 📝 **Smart Summaries:** Clear and structured insights from your PDFs.
+- 🎨 **Visual Viewer:** Interactive, progress-tracking experience.
+- 🔒 **Secure Processing:** Safe file management and summary generation.
+- 🔐 **Protected Access:** Robust authentication with Clerk.
+- 💰 **Flexible Pricing:** Choose between Basic or Pro plans.
+- 🪝 **Stripe Integration:** Webhooks for smooth payments.
+- 📊 **User Dashboard:** Manage and organize summaries with ease.
+- 📱 **Responsive Design:** Flawless on mobile and desktop.
+- 🔄 **Real-Time Updates:** Seamless data refresh with path revalidation.
+- 🚀 **Production Ready:** Deployed using Vercel.
+- 🔔 **Notifications:** Real-time updates on file status.
+- 📈 **Performance Boost:** Efficient and optimized.
+- 🔍 **SEO Friendly:** Ensure your summaries get noticed.
+- 🗂️ **Markdown Export:** Convert summaries into blog posts effortlessly.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🧑‍💻 **Tech Stack I Mastered**
 
-To learn more about Next.js, take a look at the following resources:
+- 🚀 **Next.js 15 App Router** - For seamless routing and server-side rendering.
+- ⚛️ **React 19** - Building stunning interactive UIs.
+- 🔑 **Clerk** - Secure authentication using Passkeys, GitHub, and Google Sign-in.
+- 🤖 **GPT-4 & Gemini AI** - AI-powered smart summarization.
+- 🧠 **Langchain** - PDF parsing, text extraction, and chunking.
+- 🎨 **ShadCN UI** - Modern, accessible UI components.
+- 💾 **NeonDB (PostgreSQL)** - Scalable serverless database storage.
+- 📤 **UploadThing** - Secure PDF uploads up to 32MB.
+- 💳 **Stripe** - Subscription management and payment processing.
+- 🔔 **Toast Notifications** - Instant feedback for users.
+- 📜 **TypeScript** - Robust typing for efficient coding.
+- 💅 **TailwindCSS 4** - Sleek and responsive designs.
+- 🚀 **Vercel** - Smooth, scalable deployments.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🎯 **What I Gained**
 
-## Deploy on Vercel
+This project was an exciting deep dive into the world of AI SaaS development. I tackled real-world challenges, applied modern tools, and followed industry best practices to build a scalable, user-friendly application.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+🌟 **Want to see how I did it?** Dive into the course and build your own version of Sommaire!
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
