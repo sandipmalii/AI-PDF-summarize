@@ -16,9 +16,6 @@ export default function Home() {
     <PricingSection/>
     <CTASection/> 
     </div>
-  
-   
-
-    </div>
+     </div>
   );
 }

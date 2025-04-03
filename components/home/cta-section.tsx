@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
-
+ 
 export default function CTASection() {
   return (
     <section className="bg-gray-50 py-12">
