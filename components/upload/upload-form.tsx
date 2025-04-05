@@ -72,11 +72,12 @@
 
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { useUploadThing } from '@/utils/uploadthing';
 import UploadFormInput from '@/components/upload/upload-form-input';
 import { z } from 'zod';
 import { toast } from 'sonner'; // ✅ Sonner toast
+import { generatePdfSummary } from '@/actions/upload-actions';
 
 // ✅ Zod validation schema
 const schema = z.object({
@@ -91,6 +92,9 @@ const schema = z.object({
 });
 
 export default function UploadForm() {
+const {toast} = useToast();
+const fromRef= useRef<HTMLFormElement>(null);
+
   const { startUpload } = useUploadThing('pdfUploader', {
     onClientUploadComplete: () => {
       toast.success('✅ Uploaded successfully!');
@@ -106,37 +110,62 @@ export default function UploadForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const file = formData.get('file') as File;
 
-    const validated = schema.safeParse({ file });
+try{
+  const formData = new FormData(e.currentTarget);
+  const file = formData.get('file') as File;
 
-    if (!validated.success) {
-      toast.error(
-        validated.error.flatten().fieldErrors.file?.[0] ?? 'Invalid file'
-      );
-      return;
-    }
+  const validated = schema.safeParse({ file });
 
-    toast('📁 Processing PDF', {
-      description: 'Hang tight! Our AI is reading your document ✨',
-    });
+  if (!validated.success) {
+    toast.error(
+      validated.error.flatten().fieldErrors.file?.[0] ?? 'Invalid file'
+    );
+    return;
+  }
 
-    const resp = await startUpload([file]);
-    if (!resp) {
-      toast.error('Something went wrong. Please try a different file.');
-      return;
-    }
+  toast('📁 Processing PDF', {
+    description: 'Hang tight! Our AI is reading your document ✨',
+  });
 
-     // parse the pdf using lang chain
-     const summary = await generatePDFSummary(resp);
+  const resp = await startUpload([file]);
+  if (!resp) {
+    toast.error('Something went wrong. Please try a different file.');
+    return;
+  }
 
+   // parse the pdf using lang chain
+   //parse the pdf using lang chain
+  const result = await generatePdfSummary(resp);
 
-  };
+const { data = null, message = null } = result || {};
+
+if (data) {
+toast({
+  title: '📁Saving PDF...',
+  description: 'Hang tight! We are saving your summary! ✨',
+});
+fromRef.current?.reset();
+// if (data.summary) {
+//save the summary to the database
+// }
+}
+//summarize the pdf using AI
+//redirect to the [id] summary page
+
+};
+
+}
+catch(error){
+  console.error('Error occurred while uploading', error);
+  fromRef.current?.reset();
+}
+
+  
 
   return (
     <div className="flex flex-col gap-8 w-full max-w-2xl mx-auto">
-      <UploadFormInput onSubmit={handleSubmit} />
+      <UploadFormInput ref={formRef} onSubmit={handleSubmit} />
     </div>
   );
 }
