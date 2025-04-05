@@ -128,7 +128,10 @@ export default function UploadForm() {
       return;
     }
 
-    // You can handle the response (resp[0]?.url etc.) here if needed
+     // parse the pdf using lang chain
+     const summary = await generatePDFSummary(resp);
+
+
   };
 
   return (
