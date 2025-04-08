@@ -57,6 +57,13 @@ if (!summary) {
   };
 }
 
+return {
+  success : true,
+message :'Summary generated successfully' ,
+data:{
+summary,
+},
+  };
   }
   catch(err){
     return {

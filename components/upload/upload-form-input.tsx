@@ -1,16 +1,18 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import React, { forwardRef } from 'react';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
+import { Loader2 } from 'lucide-react';
 
 interface UploadFormInputProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  isLoading: boolean;
 }
 
-// ✅ Correct implementation with forwardRef
 const UploadFormInput = forwardRef<HTMLFormElement, UploadFormInputProps>(
-  ({ onSubmit }, ref) => {
+  ({ onSubmit, isLoading }, ref) => {
     return (
       <form ref={ref} className="flex flex-col gap-6" onSubmit={onSubmit}>
         <div className="flex justify-end items-center gap-1.5">
@@ -20,16 +22,25 @@ const UploadFormInput = forwardRef<HTMLFormElement, UploadFormInputProps>(
             type="file"
             accept="application/pdf"
             required
-            className=""
+            className={cn(isLoading && 'opacity-50 cursor-not-allowed')}
+            disabled={isLoading}
           />
-          <Button type="submit">Upload your PDF</Button>
+          <Button disabled={isLoading} type="submit">
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              'Upload your PDF'
+            )}
+          </Button>
         </div>
       </form>
     );
   }
 );
 
-// ✅ Required for forwardRef to work correctly
 UploadFormInput.displayName = 'UploadFormInput';
 
 export default UploadFormInput;

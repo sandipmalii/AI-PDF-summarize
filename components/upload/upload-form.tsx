@@ -94,6 +94,7 @@ const schema = z.object({
 export default function UploadForm() {
 const {toast} = useToast();
 const fromRef= useRef<HTMLFormElement>(null);
+const[isLoading, setIsLoading] = useState(false);
 
   const { startUpload } = useUploadThing('pdfUploader', {
     onClientUploadComplete: () => {
@@ -112,6 +113,8 @@ const fromRef= useRef<HTMLFormElement>(null);
     e.preventDefault();
 
 try{
+  setIsLoading(true);
+  // return
   const formData = new FormData(e.currentTarget);
   const file = formData.get('file') as File;
 
@@ -121,6 +124,7 @@ try{
     toast.error(
       validated.error.flatten().fieldErrors.file?.[0] ?? 'Invalid file'
     );
+    setIsLoading(false);
     return;
   }
 
@@ -131,6 +135,7 @@ try{
   const resp = await startUpload([file]);
   if (!resp) {
     toast.error('Something went wrong. Please try a different file.');
+    setIsLoading(false);
     return;
   }
 
@@ -146,7 +151,7 @@ toast({
   description: 'Hang tight! We are saving your summary! ✨',
 });
 fromRef.current?.reset();
-// if (data.summary) {
+if (data.summary) {
 //save the summary to the database
 // }
 }
@@ -157,6 +162,7 @@ fromRef.current?.reset();
 
 }
 catch(error){
+  setIsLoading(false);
   console.error('Error occurred while uploading', error);
   fromRef.current?.reset();
 }
@@ -165,7 +171,8 @@ catch(error){
 
   return (
     <div className="flex flex-col gap-8 w-full max-w-2xl mx-auto">
-      <UploadFormInput ref={formRef} onSubmit={handleSubmit} />
+      <UploadFormInput isLoading={isLoading}
+       ref={formRef} onSubmit={handleSubmit} />
     </div>
   );
 }
