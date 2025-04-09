@@ -5,6 +5,11 @@
 Hey there! 🚀 I built **PDFSummize**, a full-stack AI SaaS application that magically turns your PDFs into beautiful, engaging visual summaries, like Instagram reels. With a budget-friendly **$0 Tech Stack** and free tools, you won't have to worry about costs. Plus, if OpenAI credits run out, it seamlessly switches to **Gemini AI** for continued service!
 
 ---
+## 🌟 Live Demo
+
+🚀 [Coming Soon – Deploy via Vercel or Render]
+
+---
 
 ## ✨ **What I Created**
 
