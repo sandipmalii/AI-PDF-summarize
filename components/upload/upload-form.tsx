@@ -70,14 +70,16 @@
 //   );
 // }
 
+
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useUploadThing } from '@/utils/uploadthing';
 import UploadFormInput from '@/components/upload/upload-form-input';
 import { z } from 'zod';
-import { toast } from 'sonner'; // ✅ Sonner toast
-import { generatePdfSummary } from '@/actions/upload-actions';
+import { toast, useToast } from 'sonner'; // Fixed: included useToast
+import { generatePdfSummary, storePdfSummaryAction } from '@/actions/upload-actions';
+import { useRouter } from 'next/navigation'; // Fixed: useRouter instead of invalid _router
 
 // ✅ Zod validation schema
 const schema = z.object({
@@ -92,9 +94,10 @@ const schema = z.object({
 });
 
 export default function UploadForm() {
-const {toast} = useToast();
-const fromRef= useRef<HTMLFormElement>(null);
-const[isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+  const formRef = useRef<HTMLFormElement>(null); // Fixed typo: fromRef ➝ formRef
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter(); // Fixed invalid _router
 
   const { startUpload } = useUploadThing('pdfUploader', {
     onClientUploadComplete: () => {
@@ -105,74 +108,79 @@ const[isLoading, setIsLoading] = useState(false);
       toast.error('❌ Upload error: ' + error.message);
     },
     onUploadBegin: ({ file }) => {
-      toast('📤 Uploading: ' + file.name); // ✅ Just use toast()
+      toast('📤 Uploading: ' + file.name);
     },
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-try{
-  setIsLoading(true);
-  // return
-  const formData = new FormData(e.currentTarget);
-  const file = formData.get('file') as File;
+    try {
+      setIsLoading(true);
 
-  const validated = schema.safeParse({ file });
+      const formData = new FormData(e.currentTarget);
+      const file = formData.get('file') as File;
 
-  if (!validated.success) {
-    toast.error(
-      validated.error.flatten().fieldErrors.file?.[0] ?? 'Invalid file'
-    );
-    setIsLoading(false);
-    return;
-  }
+      const validated = schema.safeParse({ file });
 
-  toast('📁 Processing PDF', {
-    description: 'Hang tight! Our AI is reading your document ✨',
-  });
+      if (!validated.success) {
+        toast.error(
+          validated.error.flatten().fieldErrors.file?.[0] ?? 'Invalid file'
+        );
+        return;
+      }
 
-  const resp = await startUpload([file]);
-  if (!resp) {
-    toast.error('Something went wrong. Please try a different file.');
-    setIsLoading(false);
-    return;
-  }
+      toast('📁 Processing PDF', {
+        description: 'Hang tight! Our AI is reading your document ✨',
+      });
 
-   // parse the pdf using lang chain
-   //parse the pdf using lang chain
-  const result = await generatePdfSummary(resp);
+      const resp = await startUpload([file]);
 
-const { data = null, message = null } = result || {};
+      if (!resp) {
+        toast.error('Something went wrong. Please try a different file.');
+        return;
+      }
 
-if (data) {
-toast({
-  title: '📁Saving PDF...',
-  description: 'Hang tight! We are saving your summary! ✨',
-});
-fromRef.current?.reset();
-if (data.summary) {
-//save the summary to the database
-// }
-}
-//summarize the pdf using AI
-//redirect to the [id] summary page
+      const result = await generatePdfSummary(resp);
+      const { data = null } = result || {};
 
-};
+      if (data) {
+        toast({
+          title: '💾 Saving PDF...',
+          description: 'Hang tight! We are saving your summary! ✨',
+        });
 
-}
-catch(error){
-  setIsLoading(false);
-  console.error('Error occurred while uploading', error);
-  fromRef.current?.reset();
-}
+        const storeResult = await storePdfSummaryAction({
+          summary: data.summary,
+          fileUrl: resp[0].serverData.file.url,
+          title: data.title,
+          fileName: file.name,
+        });
 
-  
+        if (storeResult?.success) {
+          toast({
+            title: '✨ Summary Generated!',
+            description: 'Your PDF has been successfully summarized and saved',
+          });
+
+          formRef.current?.reset();
+          router.push(`/summaries/${storeResult.data.id}`); // Fixed template string
+        } else {
+          toast.error(storeResult?.message || 'Failed to save summary.');
+        }
+      }
+    } catch (error) {
+      console.error('Error occurred while uploading', error);
+      toast.error('An unexpected error occurred.');
+      formRef.current?.reset();
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-8 w-full max-w-2xl mx-auto">
-      <UploadFormInput isLoading={isLoading}
-       ref={formRef} onSubmit={handleSubmit} />
+      <UploadFormInput isLoading={isLoading} ref={formRef} onSubmit={handleSubmit} />
     </div>
   );
 }
