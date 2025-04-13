@@ -1,24 +1,21 @@
-import type { Metadata } from "next"; 
-import { Geist, Geist_Mono } from "next/font/google"; 
-import "./globals.css"; 
-import Header from "@/components/common/Header"; 
-import Footer from "@/components/common/Footer"; 
+import type { Metadata } from "next";
+import { Source_Sans_3 as FontSans } from 'next/font/google';
+import "./globals.css";
+import Header from "@/components/common/Header";
+import Footer from "@/components/common/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Toaster } from "sonner"; // ✅ Added this
+import { Toaster } from "sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const fontSans = FontSans({
+  variable: '--font-sans',
+  subsets: ['latin'],
+  weight: ['200', '300', '400', '500', '600', '700', '800', '900'],
 });
 
 export const metadata: Metadata = {
-  title: "Proj",
-  description: "Proj is an app for summarizing PDF documents",
+  title: "PDFSummize",
+  description:
+    'Save hours of reading time. Transform lengthy PDFs into clear, accurate summaries in seconds with our advanced AI technology.',
 };
 
 export default function RootLayout({
@@ -27,15 +24,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={fontSans.variable}>
       <ClerkProvider>
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <body className="antialiased">
           <div className="relative flex min-h-screen flex-col">
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
-          <Toaster /> {/* ✅ This will now work */}
+          <Toaster />
         </body>
       </ClerkProvider>
     </html>
