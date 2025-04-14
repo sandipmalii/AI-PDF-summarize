@@ -1,38 +1,51 @@
-import { Sparkles } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Sparkles } from "lucide-react"; // Icon from lucide-react for visual flair
+import { Badge } from "@/components/ui/badge"; // Custom styled badge component
+
+// These should be correctly imported for animation to work
+import { MotionDiv } from "@/components/common/motion-wrapper";
+import { itemVariants } from "@/utils/constants";
 
 export default function UploadHeader() {
   return (
     <div className="flex flex-col items-center justify-center gap-6 text-center">
-      
-      {/* AI-Powered Badge */}
-      <div className="relative p-[1px] overflow-hidden rounded-full bg-gradient-to-r from-rose-200 via-rose-500 to-rose-800 animate-gradient-x group">
+      {/* === Animated Badge indicating AI Feature === */}
+      <MotionDiv
+        variants={itemVariants}
+        className="relative p-[1px] overflow-hidden rounded-full bg-gradient-to-r from-rose-200 via-rose-500 to-rose-800 animate-gradient-x group"
+      >
+        {/* Badge UI with Sparkles icon */}
         <Badge
           variant="secondary"
-          className="relative px-6 py-2 text-base font-medium bg-white rounded-full group-hover:bg-gray-50 transition-colors flex items-center"
+          className="relative flex items-center rounded-full bg-white px-6 py-2 text-base font-medium transition-colors group-hover:bg-gray-50"
         >
-          <Sparkles className="h-6 w-6 mr-2 text-rose-600 animate-pulse" />
+          {/* Icon with animation */}
+          <Sparkles className="mr-2 h-6 w-6 text-rose-600 animate-pulse" />
           <p className="text-base">AI-Powered Content Creation</p>
         </Badge>
-      </div>
+      </MotionDiv>
 
-      {/* Heading */}
-      <h1 className="capitalize text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-        Start Uploading{' '}
+      {/* === Main Heading for Upload Section === */}
+      <MotionDiv
+        variants={itemVariants}
+        className="text-3xl font-bold tracking-tight text-gray-900 capitalize sm:text-4xl"
+      >
+        Start Uploading {/* Highlighted animated span with background effect */}
         <span className="relative inline-block">
           <span className="relative z-10 px-2">Your PDFs</span>
           <span
-            className="absolute inset-0 bg-rose-200/50 -rotate-2 rounded-lg transform -skew-y-1"
             aria-hidden="true"
+            className="absolute inset-0 -rotate-2 -skew-y-1 rounded-lg bg-rose-200/50"
           ></span>
         </span>
-      </h1>
+      </MotionDiv>
 
-      {/* Subtext */}
-      <p className="mt-2 text-lg leading-8 text-gray-600 max-w-2xl">
+      {/* === Subtext giving context to the feature === */}
+      <MotionDiv
+        variants={itemVariants}
+        className="mt-2 max-w-2xl text-lg leading-8 text-gray-600"
+      >
         Upload your PDF and let our AI do the magic! ✨
-      </p>
-
+      </MotionDiv>
     </div>
   );
 }

@@ -38,26 +38,40 @@ export async function getSummaryById(id: string) {
   }
 }
 
-export function parsePoint(point: string) {
-  const isNumbered = /^\d+\./.test(point);
-  const isMainPoint = /^\•/.test(point);
-  // Replace the Unicode property escape with a simpler emoji detection
-  const emojiRegex = /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]/u;
-  const hasEmoji = emojiRegex.test(point);
-  const isEmpty = !point.trim();
+// export function parsePoint(point: string) {
+//   const isNumbered = /^\d+\./.test(point);
+//   const isMainPoint = /^\•/.test(point);
+//   // Replace the Unicode property escape with a simpler emoji detection
+//   const emojiRegex = /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]/u;
+//   const hasEmoji = emojiRegex.test(point);
+//   const isEmpty = !point.trim();
 
-  return { isNumbered, isMainPoint, hasEmoji, isEmpty };
-}
+//   return { isNumbered, isMainPoint, hasEmoji, isEmpty };
+// }
 
 
-export function parseEmojiPoint(content: string) {
-  const cleanContent = content.replace(/^\*\s*/, '').trim();
-  const matches = cleanContent.match(/^(\p{Emoji}+)\s*(.+)$/u);
-  if (!matches) return null;
+// export function parseEmojiPoint(content: string) {
+//   const cleanContent = content.replace(/^\*\s*/, '').trim();
+//   const matches = cleanContent.match(/^(\p{Emoji}+)\s*(.+)$/u);
+//   if (!matches) return null;
 
-  const [, emoji, text] = matches;
-  return {
-    emoji: emoji.trim(),
-    text: text.trim(),
-  };
+//   const [, emoji, text] = matches;
+//   return {
+//     emoji: emoji.trim(),
+//     text: text.trim(),
+//   };
+// }
+
+
+
+export async function getUserUploadCount(userId: string) {
+  const sql = await getDbConnection();
+  try {
+    const [result]=
+    await sql`SELECT COUNT(*) FROM pdf_summaries WHERE user_id = ${userId}`;
+    return result[0].count;
+  } catch (err) {
+    console.error('Error fetching user upload count', err);
+    return 0;
+  }
 }

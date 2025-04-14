@@ -69,20 +69,20 @@
 //   );
 // }
 
-("use client");
+"use client";
 
-import React, { use, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useUploadThing } from "@/utils/uploadthing";
 import UploadFormInput from "@/components/upload/upload-form-input";
 import { z } from "zod";
-import { toast } from "sonner"; // Fixed: included useToast
+import { toast } from "sonner";
 import {
   generatePdfSummary,
   storePdfSummaryAction,
 } from "@/actions/upload-actions";
-import { useRouter } from "next/navigation"; // Fixed: useRouter instead of invalid _router
+import { useRouter } from "next/navigation";
+import LoadingSkeleton from "./loading-skeleton"; // ✅ fix import: it was a named import but should be default if default exported
 
-// ✅ Zod validation schema
 const schema = z.object({
   file: z
     .custom<File>((file) => file instanceof File, { message: "Invalid file" })
@@ -95,35 +95,33 @@ const schema = z.object({
 });
 
 export default function UploadForm() {
-  const { toast } = useToast();
-  const formRef = useRef<HTMLFormElement>(null); // Fixed typo: fromRef ➝ formRef
+  const formRef = useRef<HTMLFormElement>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter(); // Fixed invalid _router
+  const router = useRouter();
 
   const { startUpload } = useUploadThing("pdfUploader", {
     onClientUploadComplete: () => {
       toast.success("✅ Uploaded successfully!");
     },
     onUploadError: (error) => {
-      console.error("Error occurred while uploading", error);
-      toast.error("❌ Upload error: " + error.message);
+      console.error("Upload error:", error);
+      toast.error("❌ Upload failed: " + error.message);
     },
     onUploadBegin: ({ file }) => {
+      console.log("onUploadBegin received:", { file });
       toast("📤 Uploading: " + file.name);
     },
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
-      setIsLoading(true);
-
       const formData = new FormData(e.currentTarget);
       const file = formData.get("file") as File;
 
       const validated = schema.safeParse({ file });
-
       if (!validated.success) {
         toast.error(
           validated.error.flatten().fieldErrors.file?.[0] ?? "Invalid file"
@@ -136,9 +134,8 @@ export default function UploadForm() {
       });
 
       const resp = await startUpload([file]);
-
       if (!resp) {
-        toast.error("Something went wrong. Please try a different file.");
+        toast.error("Something went wrong. Try another file.");
         return;
       }
 
@@ -148,7 +145,7 @@ export default function UploadForm() {
       if (data) {
         toast({
           title: "💾 Saving PDF...",
-          description: "Hang tight! We are saving your summary! ✨",
+          description: "Hang tight! We are saving your summary ✨",
         });
 
         const storeResult = await storePdfSummaryAction({
@@ -158,20 +155,20 @@ export default function UploadForm() {
           fileName: file.name,
         });
 
-        if (storeResult?.success) {
+        if (storeResult?.success && storeResult.data?.id) {
           toast({
             title: "✨ Summary Generated!",
             description: "Your PDF has been successfully summarized and saved",
           });
 
           formRef.current?.reset();
-          router.push(`/summaries/${storeResult.data.id}`); // Fixed template string
+          router.push(`/summaries/${storeResult.data.id}`);
         } else {
           toast.error(storeResult?.message || "Failed to save summary.");
         }
       }
     } catch (error) {
-      console.error("Error occurred while uploading", error);
+      console.error("Unexpected error:", error);
       toast.error("An unexpected error occurred.");
       formRef.current?.reset();
     } finally {
@@ -181,11 +178,41 @@ export default function UploadForm() {
 
   return (
     <div className="flex flex-col gap-8 w-full max-w-2xl mx-auto">
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center" aria-hidden="true">
+          <div className="w-full border-t border-gray-200 dark:border-gray-800" />
+        </div>
+        <div className="relative flex justify-center">
+          <span className="bg-background px-3 text-muted-foreground text-sm">
+            Upload PDF
+          </span>
+        </div>
+      </div>
+
       <UploadFormInput
         isLoading={isLoading}
         ref={formRef}
         onSubmit={handleSubmit}
       />
+
+      {isLoading && (
+        <>
+          <div className="relative">
+            <div
+              className="absolute inset-0 flex items-center"
+              aria-hidden="true"
+            >
+              <div className="w-full border-t border-gray-200 dark:border-gray-800" />
+            </div>
+            <div className="relative flex justify-center">
+              <span className="bg-background px-3 text-muted-foreground text-sm">
+                Processing
+              </span>
+            </div>
+          </div>
+          <LoadingSkeleton />
+        </>
+      )}
     </div>
   );
 }

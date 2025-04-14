@@ -4,13 +4,10 @@ import Link from 'next/link';
 import { FileText } from 'lucide-react'; 
 import { formatDistanceToNow } from 'date-fns';
 import { cn, formatFileName } from '@/lib/utils';
- 
-
-// import SummaryHeader from './summary-header'; // You can remove this line if you're defining SummaryHeader here
-// import StatusBadge from './status-badge'; // You can remove this line if you're defining StatusBadge here
+import { MotionDiv } from '@/components/common/motion-wrapper'; // Correct import for MotionDiv
+import { itemVariants } from '@/utils/constants'; // Correct import for itemVariants
 
 // ✅ SummaryHeader Component
-
 const SummaryHeader = ({
   fileUrl,
   title,
@@ -27,7 +24,9 @@ const SummaryHeader = ({
         <h3 className="text-base xl:text-lg font-semibold text-gray-900 truncate w-4/5">
           {title || formatFileName(fileUrl)}  
         </h3>
-        <p className="text-sm text-gray-500">{formatDistanceToNow(new Date(createdAt), {addSuffix: true})} </p>
+        <p className="text-sm text-gray-500">
+          {formatDistanceToNow(new Date(createdAt), { addSuffix: true })} 
+        </p>
       </div>
     </div>
   );
@@ -52,30 +51,40 @@ const StatusBadge = ({ status }: { status: string }) => {
 // ✅ Main SummaryCard Component
 export default function SummaryCard({ summary }: { summary: any }) {
   return (
-    <div className="relative h-full">
-      <Card>
-        <div className="absolute top-2 right-2">
-          <DeleteButton summaryId={summary.id} />
-        </div>
-        <Link href={`/summaries/${summary.id}`} className="block p-4 sm:p-6">
-          <div className="flex flex-col gap-3 sm:gap-4">
-            <SummaryHeader
-              fileUrl={summary.original_file_url}
-              title={summary.title}
-              createdAt={summary.created_at}
-            />
-            <p className="text-gray-600 line-clamp-2 text-sm sm:text-base pl-2">
-              {summary.summary_text}
-            </p>
+    <MotionDiv
+      variants={itemVariants}
+      initial="hidden"
+      animate="visible"
+      whileHover={{
+        scale: 1.02,
+        transition: { duration: 0.2, ease: 'easeOut' },
+      }}
+    >
+      <div className="relative h-full">
+        <Card>
+          <div className="absolute top-2 right-2">
+            <DeleteButton summaryId={summary.id} />
           </div>
-          <div className="flex justify-between items-center mt-2 sm:mt-4">
-            <p className="text-sm text-gray-500">
-              {new Date(summary.created_at).toLocaleDateString()}
-            </p>
-            <StatusBadge status={summary.status} />
-          </div>
-        </Link>
-      </Card>
-    </div>
+          <Link href={`/summaries/${summary.id}`} className="block p-4 sm:p-6">
+            <div className="flex flex-col gap-3 sm:gap-4">
+              <SummaryHeader
+                fileUrl={summary.original_file_url}
+                title={summary.title}
+                createdAt={summary.created_at}
+              />
+              <p className="text-gray-600 line-clamp-2 text-sm sm:text-base pl-2">
+                {summary.summary_text}
+              </p>
+            </div>
+            <div className="flex justify-between items-center mt-2 sm:mt-4">
+              <p className="text-sm text-gray-500">
+                {new Date(summary.created_at).toLocaleDateString()}
+              </p>
+              <StatusBadge status={summary.status} />
+            </div>
+          </Link>
+        </Card>
+      </div>
+    </MotionDiv>
   );
 }
