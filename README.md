@@ -54,3 +54,13 @@ This project was an exciting deep dive into the world of AI SaaS development. I 
 
 🌟 **Want to see how I did it?** Dive into the course and build your own version of PDFSummize!
 
+## 🖼️ Screenshots
+
+![Screenshot 2025-04-09 142717](https://github.com/user-attachments/assets/ff4faeb0-6843-4b86-b7f4-dd5efcbeab00)
+
+![Screenshot 2025-04-09 142742](https://github.com/user-attachments/assets/90fa2819-6dc9-472b-a996-03f550f26a4b)
+
+![Screenshot 2025-04-12 232524](https://github.com/user-attachments/assets/61a97991-7c8f-401b-963e-c9c83b170664)
+
+![Screenshot 2025-04-14 160829](https://github.com/user-attachments/assets/f91d874e-ab0d-49b3-8983-8a79965d3802)
+
