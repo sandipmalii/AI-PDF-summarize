@@ -1,6 +1,7 @@
 # 🌟 PDFSummize - Transform Your PDFs into Visual Summaries
 
 **Date:** 2025-03-31
+          2025-04-15  
 
 Hey there! 🚀 I built **PDFSummize**, a full-stack AI SaaS application that magically turns your PDFs into beautiful, engaging visual summaries, like Instagram reels. With a budget-friendly **$0 Tech Stack** and free tools, you won't have to worry about costs. Plus, if OpenAI credits run out, it seamlessly switches to **Gemini AI** for continued service!
 
