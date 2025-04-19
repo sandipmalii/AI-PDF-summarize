@@ -1,6 +1,3 @@
-
-
-
 // "use client";
 
 // import React, { useRef, useState } from "react";
@@ -149,9 +146,6 @@
 //   );
 // }
 
-
-
-
 "use client";
 
 import React, { useRef, useState } from "react";
@@ -211,7 +205,8 @@ export default function UploadForm() {
       if (!validatedFields.success) {
         toast.error("❌ Invalid File", {
           description:
-            validatedFields.error.flatten().fieldErrors?.file?.[0] ?? "Invalid file.",
+            validatedFields.error.flatten().fieldErrors?.file?.[0] ??
+            "Invalid file.",
         });
         return;
       }
@@ -222,7 +217,7 @@ export default function UploadForm() {
 
       const uploadResponse = await startUpload([file]);
 
-      const uploadFileUrl = uploadResponse?.[0]?.serverData?.fileUrl;
+      const uploadFileUrl = uploadResponse?.[0]?.serverData?.file.url;
       if (!uploadFileUrl) {
         toast.error("❌ Upload Failed", {
           description: "Please use a different file.",
@@ -234,10 +229,16 @@ export default function UploadForm() {
         description: "Hang tight! Our AI is reading your document ✨",
       });
 
-      const result = await generatePdfSummary({
-        fileUrl: uploadFileUrl,
-        fileName: file.name,
-      });
+      const result = await generatePdfSummary([{
+        serverData : {
+          file : {
+            url : uploadFileUrl,
+            name :file.name 
+          }
+        }
+      }]);
+
+      
 
       const { data = null } = result || {};
 
@@ -298,7 +299,10 @@ export default function UploadForm() {
       {isLoading && (
         <>
           <div className="relative">
-            <div className="absolute inset-0 flex items-center" aria-hidden="true">
+            <div
+              className="absolute inset-0 flex items-center"
+              aria-hidden="true"
+            >
               <div className="w-full border-t border-gray-200 dark:border-gray-800" />
             </div>
             <div className="relative flex justify-center">

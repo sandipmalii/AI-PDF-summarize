@@ -9,7 +9,7 @@ import { revalidatePath } from 'next/cache';
 import { formatFileNameAsTitle } from '@/utils/format-utils';
 
 interface PdfSummary {
-  userId: string;
+  userId?: string;
   fileUrl: string;
   summary: string;
   title: string;
@@ -21,7 +21,7 @@ export async function generatePdfSummary(
   uploadResponse: [
     {
       serverData: {
-        userId: string;
+        userId?: string;
         file: {
           url: string;
           name: string;

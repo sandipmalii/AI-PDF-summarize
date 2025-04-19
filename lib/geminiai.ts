@@ -7,6 +7,8 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 export const generateSummaryFromGemini = async (pdfText: string) => {
   try {
     
+
+    
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro-002', 
       generationConfig: {
         temperature: 0.7,
